@@ -5,6 +5,8 @@ function createWindow() {
     var mainWindow = new BrowserWindow({
         width: 800,
         height: 200,
+        alwaysOnTop: true,
+        transparent: true,
         webPreferences: {
             nodeIntegration: true,
             enableRemoteModule: true,
@@ -15,6 +17,7 @@ function createWindow() {
 
     mainWindow.setMenuBarVisibility(false);
     mainWindow.loadFile("app/index.html");
+    mainWindow.setAlwaysOnTop(true);
 
     require("@electron/remote/main").enable(mainWindow.webContents);
     
