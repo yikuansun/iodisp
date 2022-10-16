@@ -1,0 +1,22 @@
+{
+    "Escape": "Esc",
+    "Minus": "-",
+    "Equal": "=",
+    "BracketLeft": "[",
+    "BracketRight": "]",
+    "Semicolon": ";",
+    "Quote": "'",
+    "Backquote": "\"",
+    "Backslash": "\\",
+    "Comma": ",",
+    "Period": ".",
+    "Slash": "/",
+    "PrintScreen": "PrtSc",
+    "PageUp": "PgUp",
+    "PageDown": "PgDown",
+    "Meta": "Cmnd",
+    "ArrowUp": "↑",
+    "ArrowLeft": "←",
+    "ArrowRight": "→",
+    "ArrowDown": "↓"
+}
