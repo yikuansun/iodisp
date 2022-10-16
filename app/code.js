@@ -20,7 +20,7 @@ var keysPressed = {};
 function displayKeys(keys=keysPressed) {
     var keysContainer = document.querySelector("#keysContainer");
     keysContainer.innerHTML = "";
-    var lastPlus;
+    var lastPlus = null;
     for (var keyName in keys) {
         if (keys[keyName]) {
             var keyDiv = document.createElement("div");
@@ -32,7 +32,7 @@ function displayKeys(keys=keysPressed) {
             lastPlus = plus;
         }
     }
-    lastPlus.remove();
+    if (lastPlus) lastPlus.remove();
 }
 
 uIOhook.on("keydown", (e) => {
