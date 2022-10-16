@@ -15,9 +15,36 @@ for (var keyRaw in keymapInverted) {
 }
 console.log(keymapInverted);
 
+var keysPressed = {};
+
+function displayKeys(keys=keysPressed) {
+    var keysContainer = document.querySelector("#keysContainer");
+    keysContainer.innerHTML = "";
+    var lastPlus;
+    for (var keyName in keys) {
+        if (keys[keyName]) {
+            var keyDiv = document.createElement("div");
+            keyDiv.innerText = keyName;
+            keysContainer.appendChild(keyDiv);
+            var plus = document.createElement("div");
+            plus.innerText = "+";
+            keysContainer.appendChild(plus);
+            lastPlus = plus;
+        }
+    }
+    lastPlus.remove();
+}
+
 uIOhook.on("keydown", (e) => {
     var keyName = keymapInverted[e.keycode];
-    document.write(keyName);
+    keysPressed[keyName] = true;
+    displayKeys();
+});
+
+uIOhook.on("keyup", (e) => {
+    var keyName = keymapInverted[e.keycode];
+    keysPressed[keyName] = false;
+    displayKeys();
 });
 
 uIOhook.start();
