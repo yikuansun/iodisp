@@ -1,10 +1,18 @@
 const { app, BrowserWindow } = require("electron");
+const electronWindowState = require("electron-window-state");
 require("@electron/remote/main").initialize();
 
 function createWindow() {
+    var windowState = electronWindowState({
+        defaultWidth: 400,
+        defaultHeight: 100
+    });
+
     var mainWindow = new BrowserWindow({
-        width: 800,
-        height: 200,
+        x: windowState.x,
+        y: windowState.y,
+        width: windowState.width,
+        height: windowState.height,
         alwaysOnTop: true,
         transparent: true,
         webPreferences: {
@@ -20,6 +28,8 @@ function createWindow() {
     mainWindow.setAlwaysOnTop(true);
 
     require("@electron/remote/main").enable(mainWindow.webContents);
+
+    windowState.manage(mainWindow);
     
 }
 
