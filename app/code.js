@@ -25,9 +25,11 @@ function displayKeys(keys=keysPressed) {
         if (keys[keyName]) {
             var keyDiv = document.createElement("div");
             keyDiv.innerText = keyName;
+            keyDiv.className = "keyDiv";
             keysContainer.appendChild(keyDiv);
             var plus = document.createElement("div");
             plus.innerText = "+";
+            plus.className = "plus";
             keysContainer.appendChild(plus);
             lastPlus = plus;
         }
