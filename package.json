@@ -24,9 +24,6 @@
     },
     "build": {
         "appId": "com.electron.iodisp",
-        "directories": {
-            "buildResources": "resources"
-        },
         "mac": {
             "target": "zip"
         }
