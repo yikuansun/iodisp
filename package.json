@@ -11,7 +11,7 @@
     "scripts": {
         "start": "electron .",
         "pack": "electron-builder --dir",
-        "dist": "electron-builder"
+        "dist": "electron-builder --mac --linux --windows"
     },
     "devDependencies": {
         "electron": "^17.1.0",
