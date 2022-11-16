@@ -20,7 +20,8 @@ function createWindow() {
             enableRemoteModule: true,
             contextIsolation: false,
             webviewTag: true,
-        }
+        },
+        icon: "app/icon.png",
     });
 
     mainWindow.setMenuBarVisibility(false);
