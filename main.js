@@ -1,14 +1,41 @@
-const { app, BrowserWindow } = require("electron");
-const electronWindowState = require("electron-window-state");
-require("@electron/remote/main").initialize();
+import { app, BrowserWindow, ipcMain, Menu } from "electron";
+import { fileURLToPath } from "url";
+import path from "path";
+import fs from "fs";
+import windowStateKeeper from "electron-window-state";
+import { uIOhook, UiohookKey } from "uiohook-napi";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// ---------------------------------------------------------------------------
+// Key mapping
+// ---------------------------------------------------------------------------
+
+function buildKeymap() {
+    const remapping = JSON.parse(
+        fs.readFileSync(path.join(__dirname, "app", "remap.json"), "utf-8")
+    );
+
+    const keymap = {};
+    for (const [keyName, keyCode] of Object.entries(UiohookKey)) {
+        // Collapse Right-variants (e.g. ShiftRight → Shift) unless explicitly remapped
+        const normalized = remapping[keyName]
+            ?? (keyName.endsWith("Right") ? keyName.replace("Right", "") : keyName);
+        keymap[keyCode] = normalized;
+    }
+    return keymap;
+}
+
+const keymap = buildKeymap();
+
+// ---------------------------------------------------------------------------
+// Window
+// ---------------------------------------------------------------------------
 
 function createWindow() {
-    var windowState = electronWindowState({
-        defaultWidth: 400,
-        defaultHeight: 100
-    });
+    const windowState = windowStateKeeper({ defaultWidth: 400, defaultHeight: 100 });
 
-    var mainWindow = new BrowserWindow({
+    const win = new BrowserWindow({
         x: windowState.x,
         y: windowState.y,
         width: windowState.width,
@@ -16,27 +43,81 @@ function createWindow() {
         alwaysOnTop: true,
         transparent: true,
         backgroundColor: "#00000000",
+        icon: path.join(__dirname, "app", "icon.png"),
         webPreferences: {
-            nodeIntegration: true,
-            enableRemoteModule: true,
-            contextIsolation: false,
-            webviewTag: true,
+            preload: path.join(__dirname, "preload.cjs"),
+            contextIsolation: true,
+            sandbox: false,       // required for preload to use require()
+            nodeIntegration: false,
         },
-        icon: "app/icon.png",
     });
 
-    mainWindow.setMenuBarVisibility(false);
-    mainWindow.loadFile("app/index.html");
-    mainWindow.setAlwaysOnTop(true);
+    win.setMenuBarVisibility(false);
+    win.loadFile(path.join(__dirname, "app", "index.html"));
 
-    require("@electron/remote/main").enable(mainWindow.webContents);
-
-    windowState.manage(mainWindow);
-    
+    windowState.manage(win);
+    return win;
 }
 
-app.whenReady().then(function() {
-    createWindow();
+// ---------------------------------------------------------------------------
+// IPC — key events forwarded from main to renderer
+// ---------------------------------------------------------------------------
+
+function startKeyHook(win) {
+    const keysPressed = new Set();
+
+    const send = () => win.webContents.send("keys-update", [...keysPressed]);
+
+    uIOhook.on("keydown", (e) => {
+        const name = keymap[e.keycode];
+        if (name) keysPressed.add(name);
+        send();
+    });
+
+    uIOhook.on("keyup", (e) => {
+        const name = keymap[e.keycode];
+        if (name) keysPressed.delete(name);
+        send();
+    });
+
+    uIOhook.start();
+
+    win.on("closed", () => uIOhook.stop());
+}
+
+// ---------------------------------------------------------------------------
+// IPC — context menu requested by renderer
+// ---------------------------------------------------------------------------
+
+ipcMain.on("show-context-menu", (event) => {
+    const win = BrowserWindow.fromWebContents(event.sender);
+    const menu = Menu.buildFromTemplate([
+        {
+            label: "Theme",
+            submenu: [
+                {
+                    label: "Default",
+                    type: "radio",
+                    click: () => event.sender.send("set-theme", "default"),
+                },
+                {
+                    label: "Dark Slick",
+                    type: "radio",
+                    click: () => event.sender.send("set-theme", "dark-slick"),
+                },
+            ],
+        },
+    ]);
+    menu.popup({ window: win });
 });
 
-app.on("window-all-closed", function() { app.quit(); });
+// ---------------------------------------------------------------------------
+// App lifecycle
+// ---------------------------------------------------------------------------
+
+app.whenReady().then(() => {
+    const win = createWindow();
+    startKeyHook(win);
+});
+
+app.on("window-all-closed", () => app.quit());
