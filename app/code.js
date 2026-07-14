@@ -26,6 +26,11 @@ function displayKeys(keys=keysPressed) {
         var keyDiv = document.createElement("div");
         keyDiv.innerText = keyName;
         keyDiv.className = "keyDiv";
+        if (keyName.length <= 1) keyDiv.style.width = "34px";
+        else {
+            keyDiv.style.width = "auto";
+            keyDiv.style.padding = "0 10px";
+        }
         keysContainer.appendChild(keyDiv);
         var plus = document.createElement("div");
         plus.innerText = "+";

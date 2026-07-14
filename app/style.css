@@ -1,7 +1,9 @@
 .keyDiv {
     background-color: goldenrod;
-    display: inline-block;
-    padding: 6px 9px;
+    display: inline-flex;
+    height: 34px;
+    align-items: center;
+    justify-content: center;
     border-radius: 3px;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     filter: drop-shadow(0 0 2px black);
@@ -16,6 +18,9 @@
     filter: drop-shadow(0 0 2px black);
 }
 
-/*body {
-    background-color: darkblue;
-}*/
+#keysContainer {
+    position: fixed;
+    top: 50vh;
+    left: 50px;
+    transform: translate(0, -50%);
+}
