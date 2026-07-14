@@ -86,3 +86,7 @@ window.iodispAPI.onKeysUpdate(renderKeys);
 document.getElementById("exitButton").addEventListener("click", () => {
     window.iodispAPI.exit();
 });
+
+document.getElementById("minimizeButton").addEventListener("click", () => {
+    window.iodispAPI.minimize();
+});

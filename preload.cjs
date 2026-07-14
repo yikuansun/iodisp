@@ -31,4 +31,8 @@ contextBridge.exposeInMainWorld("iodispAPI", {
     exit() {
         ipcRenderer.send("exit");
     },
+
+    minimize() {
+        ipcRenderer.send("minimize");
+    },
 });

@@ -107,18 +107,23 @@ ipcMain.on("show-context-menu", (event, currentTheme, showFrame) => {
             })),
         },
         {
-            label: "Show Frame",
+            label: "Show Window Frame",
             type: "checkbox",
             checked: showFrame,
             click: (item) => event.sender.send("set-show-frame", item.checked),
         },
         { type: "separator" },
+        { role: "minimize" },
         { role: "quit" },
     ]);
     menu.popup({ window: win });
 });
 
 ipcMain.on("exit", () => app.quit());
+
+ipcMain.on("minimize", (event) => {
+    BrowserWindow.fromWebContents(event.sender).minimize();
+});
 
 // ---------------------------------------------------------------------------
 // App lifecycle
