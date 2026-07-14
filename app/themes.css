@@ -1,0 +1,36 @@
+#keysContainer[data-theme="default"] .keyDiv {
+    background-color: goldenrod;
+    color: black;
+    box-shadow: 0 0 5px black;
+}
+
+#keysContainer[data-theme="dark-slick"] .keyDiv {
+    box-sizing: border-box;
+    background-color: #333333;
+    border: 3px solid deepskyblue;
+    color: deepskyblue;
+    font-weight: 700;
+    box-shadow: 0 0 8px deepskyblue;
+}
+
+#keysContainer[data-theme="nineties-neon"] .keyDiv {
+    box-sizing: border-box;
+    background-color: transparent;
+    border: 2px solid deeppink;
+    color: deeppink;
+    font-weight: 600;
+    box-shadow: 0 0 6px deeppink, inset 0 0 6px deeppink;
+    text-shadow: 0 0 6px deeppink;
+}
+
+#keysContainer[data-theme="realistic"] .keyDiv {
+    box-sizing: border-box;
+    border: 3px outset #333333;
+    background-color: #333333;
+    color: white;
+}
+
+#keysContainer[data-theme="paper"] .keyDiv {
+    background-color: antiquewhite;
+    color: black;
+}

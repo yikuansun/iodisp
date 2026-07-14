@@ -93,8 +93,11 @@ function startKeyHook(win) {
 ipcMain.on("show-context-menu", (event, currentTheme, showFrame) => {
     const win = BrowserWindow.fromWebContents(event.sender);
     const themes = [
-        { label: "Default",    id: "default"    },
+        { label: "ioDisp Classic", id: "default" },
         { label: "Dark Slick", id: "dark-slick" },
+        { label: "90s Neon", id: "nineties-neon" },
+        { label: "3D", id: "realistic" },
+        { label: "Paper", id: "paper" },
     ];
     const menu = Menu.buildFromTemplate([
         {

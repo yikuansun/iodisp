@@ -27,21 +27,6 @@
     transform: translate(0, -50%);
 }
 
-#keysContainer[data-theme="default"] .keyDiv {
-    background-color: goldenrod;
-    color: black;
-    box-shadow: 0 0 5px black;
-}
-
-#keysContainer[data-theme="dark-slick"] .keyDiv {
-    box-sizing: border-box;
-    background-color: #333333;
-    border: 3px solid deepskyblue;
-    color: deepskyblue;
-    font-weight: 700;
-    box-shadow: 0 0 8px deepskyblue;
-}
-
 body {
     margin: 0;
     width: 100vw;

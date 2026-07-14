@@ -12,7 +12,7 @@ const keysContainer = document.querySelector("#keysContainer");
 // ---------------------------------------------------------------------------
 
 const THEME_KEY = "iodisp-theme";
-const DEFAULT_THEME = "dark-slick";
+const DEFAULT_THEME = "default";
 
 function applyTheme(theme) {
     keysContainer.setAttribute("data-theme", theme);
