@@ -37,3 +37,51 @@
     font-weight: 700;
     box-shadow: 0 0 8px deepskyblue;
 }
+
+body {
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    box-shadow: inset 0 0 5px white;
+    transition: box-shadow 0.2s;
+}
+
+#menuBar {
+    position: fixed;
+    top: 0px;
+    left: 0;
+    width: 100vw;
+    height: 25px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 7px;
+
+    background-color: black;
+    color: white;
+
+    -webkit-app-region: drag;
+    cursor: move;
+    user-select: none;
+
+    transition: top 0.2s;
+}
+
+#menuBar :nth-child(1) {
+    flex-grow: 1;
+}
+
+#exitButton {
+    -webkit-app-region: no-drag;
+    background-color: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+#exitButton:hover {
+    color: red;
+}

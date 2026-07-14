@@ -42,6 +42,7 @@ function createWindow() {
         height: windowState.height,
         alwaysOnTop: true,
         transparent: true,
+        frame: false,
         backgroundColor: "#00000000",
         icon: path.join(__dirname, "app", "icon.png"),
         webPreferences: {
@@ -89,7 +90,7 @@ function startKeyHook(win) {
 // IPC — context menu requested by renderer
 // ---------------------------------------------------------------------------
 
-ipcMain.on("show-context-menu", (event, currentTheme) => {
+ipcMain.on("show-context-menu", (event, currentTheme, showFrame) => {
     const win = BrowserWindow.fromWebContents(event.sender);
     const themes = [
         { label: "Default",    id: "default"    },
@@ -105,9 +106,19 @@ ipcMain.on("show-context-menu", (event, currentTheme) => {
                 click: () => event.sender.send("set-theme", id),
             })),
         },
+        {
+            label: "Show Frame",
+            type: "checkbox",
+            checked: showFrame,
+            click: (item) => event.sender.send("set-show-frame", item.checked),
+        },
+        { type: "separator" },
+        { role: "quit" },
     ]);
     menu.popup({ window: win });
 });
+
+ipcMain.on("exit", () => app.quit());
 
 // ---------------------------------------------------------------------------
 // App lifecycle

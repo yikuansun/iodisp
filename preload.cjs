@@ -18,8 +18,17 @@ contextBridge.exposeInMainWorld("iodispAPI", {
         ipcRenderer.on("set-theme", (_event, theme) => callback(theme));
     },
 
-    /** Ask the main process to show the context menu with the current theme checked. */
-    showContextMenu(currentTheme) {
-        ipcRenderer.send("show-context-menu", currentTheme);
+    /** Ask the main process to show the context menu with the current state checked. */
+    showContextMenu(currentTheme, showFrame) {
+        ipcRenderer.send("show-context-menu", currentTheme, showFrame);
+    },
+
+    /** Register a callback that fires when the main process toggles the frame. */
+    onSetShowFrame(callback) {
+        ipcRenderer.on("set-show-frame", (_event, showFrame) => callback(showFrame));
+    },
+
+    exit() {
+        ipcRenderer.send("exit");
     },
 });

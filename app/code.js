@@ -54,18 +54,35 @@ function renderKeys(keys) {
 }
 
 // ---------------------------------------------------------------------------
+// Show Frame — in-memory only (resets to true on each app launch)
+// ---------------------------------------------------------------------------
+
+let showFrame = true;
+
+function applyShowFrame(value) {
+    showFrame = value;
+    document.querySelector("#menuBar").style.top = value ? "0px" : "-25px";
+    document.body.style.boxShadow = value ? "" : "inset 0 0 0 white";
+}
+
+// ---------------------------------------------------------------------------
 // Context menu / theme
 // ---------------------------------------------------------------------------
 
 window.addEventListener("contextmenu", (e) => {
     e.preventDefault();
-    window.iodispAPI.showContextMenu(localStorage.getItem(THEME_KEY) ?? DEFAULT_THEME);
+    window.iodispAPI.showContextMenu(localStorage.getItem(THEME_KEY) ?? DEFAULT_THEME, showFrame);
 });
 
 window.iodispAPI.onSetTheme(applyTheme);
+window.iodispAPI.onSetShowFrame(applyShowFrame);
 
 // ---------------------------------------------------------------------------
 // Key events from main process
 // ---------------------------------------------------------------------------
 
 window.iodispAPI.onKeysUpdate(renderKeys);
+
+document.getElementById("exitButton").addEventListener("click", () => {
+    window.iodispAPI.exit();
+});
