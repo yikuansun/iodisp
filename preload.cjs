@@ -18,8 +18,8 @@ contextBridge.exposeInMainWorld("iodispAPI", {
         ipcRenderer.on("set-theme", (_event, theme) => callback(theme));
     },
 
-    /** Ask the main process to show the context menu. */
-    showContextMenu() {
-        ipcRenderer.send("show-context-menu");
+    /** Ask the main process to show the context menu with the current theme checked. */
+    showContextMenu(currentTheme) {
+        ipcRenderer.send("show-context-menu", currentTheme);
     },
 });

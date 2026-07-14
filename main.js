@@ -89,23 +89,21 @@ function startKeyHook(win) {
 // IPC — context menu requested by renderer
 // ---------------------------------------------------------------------------
 
-ipcMain.on("show-context-menu", (event) => {
+ipcMain.on("show-context-menu", (event, currentTheme) => {
     const win = BrowserWindow.fromWebContents(event.sender);
+    const themes = [
+        { label: "Default",    id: "default"    },
+        { label: "Dark Slick", id: "dark-slick" },
+    ];
     const menu = Menu.buildFromTemplate([
         {
             label: "Theme",
-            submenu: [
-                {
-                    label: "Default",
-                    type: "radio",
-                    click: () => event.sender.send("set-theme", "default"),
-                },
-                {
-                    label: "Dark Slick",
-                    type: "radio",
-                    click: () => event.sender.send("set-theme", "dark-slick"),
-                },
-            ],
+            submenu: themes.map(({ label, id }) => ({
+                label,
+                type: "radio",
+                checked: currentTheme === id,
+                click: () => event.sender.send("set-theme", id),
+            })),
         },
     ]);
     menu.popup({ window: win });

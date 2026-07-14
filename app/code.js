@@ -8,6 +8,21 @@
 const keysContainer = document.querySelector("#keysContainer");
 
 // ---------------------------------------------------------------------------
+// Theme — persisted in localStorage
+// ---------------------------------------------------------------------------
+
+const THEME_KEY = "iodisp-theme";
+const DEFAULT_THEME = "dark-slick";
+
+function applyTheme(theme) {
+    keysContainer.setAttribute("data-theme", theme);
+    localStorage.setItem(THEME_KEY, theme);
+}
+
+// Restore saved theme on load
+applyTheme(localStorage.getItem(THEME_KEY) ?? DEFAULT_THEME);
+
+// ---------------------------------------------------------------------------
 // Key display
 // ---------------------------------------------------------------------------
 
@@ -44,12 +59,10 @@ function renderKeys(keys) {
 
 window.addEventListener("contextmenu", (e) => {
     e.preventDefault();
-    window.iodispAPI.showContextMenu();
+    window.iodispAPI.showContextMenu(localStorage.getItem(THEME_KEY) ?? DEFAULT_THEME);
 });
 
-window.iodispAPI.onSetTheme((theme) => {
-    keysContainer.setAttribute("data-theme", theme);
-});
+window.iodispAPI.onSetTheme(applyTheme);
 
 // ---------------------------------------------------------------------------
 // Key events from main process
