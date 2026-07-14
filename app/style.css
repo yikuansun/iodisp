@@ -23,10 +23,10 @@
     transform: translate(0, -50%);
 }
 
-#keysContainer[data-theme="default"] {
+#keysContainer[data-theme="default"] .keyDiv {
     background-color: goldenrod;
     color: black;
-    box-shadow: 0 0 2px black;
+    box-shadow: 0 0 5px black;
 }
 
 #keysContainer[data-theme="dark-slick"] .keyDiv {

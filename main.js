@@ -15,6 +15,7 @@ function createWindow() {
         height: windowState.height,
         alwaysOnTop: true,
         transparent: true,
+        backgroundColor: "#00000000",
         webPreferences: {
             nodeIntegration: true,
             enableRemoteModule: true,

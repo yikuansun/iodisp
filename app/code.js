@@ -1,5 +1,6 @@
 const { uIOhook, UiohookKey } = require("uiohook-napi");
 const fs = require("fs");
+const { Menu } = require("@electron/remote");
 
 var keymapInverted = {};
 for (var keyName in UiohookKey) {
@@ -54,3 +55,30 @@ uIOhook.on("keyup", (e) => {
 });
 
 uIOhook.start();
+
+window.addEventListener("contextmenu", (e) => {
+    let menu = Menu.buildFromTemplate([
+        {
+            type: "submenu",
+            label: "Theme",
+            submenu: [
+                {
+                    label: "Default",
+                    type: "radio",
+                    checked: true,
+                    click: () => {
+                        document.querySelector("#keysContainer").setAttribute("data-theme", "default");
+                    }
+                },
+                {
+                    label: "Dark Slick",
+                    type: "radio",
+                    click: () => {
+                        document.querySelector("#keysContainer").setAttribute("data-theme", "dark-slick");
+                    }
+                },
+            ]
+        }
+    ]);
+    menu.popup();
+})
