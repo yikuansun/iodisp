@@ -25,7 +25,20 @@ jobs:
           node-version: 20
           cache: npm
 
-      # Install dependencies and build
+      # Linux: native build deps for uiohook-napi (libuiohook uses X11/Xt/Xtst)
+      - name: Install Linux native dependencies
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo apt-get install -y libx11-dev libxtst-dev libxinerama-dev libxt-dev
+
+      # Windows: point node-gyp at the VS2022 MSBuild that ships on the runner
+      - name: Configure node-gyp for Windows
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        run: |
+          $msbuild = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" `
+            -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
+          npm config set msbuild_path "$msbuild"
+
       - run: npm ci
 
       - run: npm run ${{ matrix.script }}
