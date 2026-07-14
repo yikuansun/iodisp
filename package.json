@@ -2,16 +2,21 @@
     "name": "iodisp",
     "productName": "ioDisp",
     "description": "Keyboard Input Display",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "type": "module",
     "author": {
         "name": "Yikuan Sun",
-        "url": "https://yikuansun.github.io"
+        "url": "https://yikuansun.github.io",
+        "email": "yikuan@example.com"
     },
+    "homepage": "https://github.com/yikuansun/iodisp",
     "main": "main.js",
     "scripts": {
         "start": "electron .",
         "pack": "electron-builder --dir",
+        "dist:windows": "electron-builder --windows",
+        "dist:mac": "electron-builder --mac",
+        "dist:linux": "electron-builder --linux",
         "dist": "electron-builder --mac --linux --windows"
     },
     "devDependencies": {
@@ -29,8 +34,15 @@
             "preload.cjs",
             "app/**/*"
         ],
+        "win": {
+            "target": "portable",
+            "signAndEditExecutable": false
+        },
         "mac": {
             "target": "zip"
+        },
+        "linux": {
+            "target": "deb"
         }
     }
 }
