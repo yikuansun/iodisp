@@ -15,37 +15,36 @@ for (var keyRaw in keymapInverted) {
 }
 console.log(keymapInverted);
 
-var keysPressed = {};
+let keysPressed = new Set();
 
 function displayKeys(keys=keysPressed) {
+    console.log(keys)
     var keysContainer = document.querySelector("#keysContainer");
     keysContainer.innerHTML = "";
     var lastPlus = null;
-    for (var keyName in keys) {
-        if (keys[keyName]) {
-            var keyDiv = document.createElement("div");
-            keyDiv.innerText = keyName;
-            keyDiv.className = "keyDiv";
-            keysContainer.appendChild(keyDiv);
-            var plus = document.createElement("div");
-            plus.innerText = "+";
-            plus.className = "plus";
-            keysContainer.appendChild(plus);
-            lastPlus = plus;
-        }
+    for (const keyName of keys) {
+        var keyDiv = document.createElement("div");
+        keyDiv.innerText = keyName;
+        keyDiv.className = "keyDiv";
+        keysContainer.appendChild(keyDiv);
+        var plus = document.createElement("div");
+        plus.innerText = "+";
+        plus.className = "plus";
+        keysContainer.appendChild(plus);
+        lastPlus = plus;
     }
     if (lastPlus) lastPlus.remove();
 }
 
 uIOhook.on("keydown", (e) => {
     var keyName = keymapInverted[e.keycode];
-    keysPressed[keyName] = true;
+    keysPressed.add(keyName);
     displayKeys();
 });
 
 uIOhook.on("keyup", (e) => {
     var keyName = keymapInverted[e.keycode];
-    keysPressed[keyName] = false;
+    keysPressed.delete(keyName);
     displayKeys();
 });
 
